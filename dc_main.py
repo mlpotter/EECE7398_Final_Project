@@ -18,7 +18,7 @@ if __name__ == "__main__":
     os.makedirs("logs",exist_ok=True)
     #  set to true if you do not want to run the experiments again when results exist
 
-    algorithms = ["baseline","aae","pgd", "fgsm", "noise", "crownibp"]
+    algorithms = ["draft","aae","pgd", "fgsm", "noise", "crownibp"]
     attacks=["fgsm","crownibp"]
     seeds = [111,222,333,444,555]
 
