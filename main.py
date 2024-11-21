@@ -1,6 +1,9 @@
 import os
 os.environ['CUBLAS_WORKSPACE_CONFIG'] = ":16:8"
 
+import sys
+from time import time as timer
+
 from src.models import Exponential_Model,DeepSurvAAE
 from src.criterion import RightCensorWrapper,RankingWrapper,RHC_Ranking_Wrapper,right_censored,ranking_loss
 from src.load_data import load_datasets,load_dataframe
@@ -116,6 +119,7 @@ def main(args):
         print("Test Rank RANDOM: ",loss_base_rank)
         print("Test NegLL RANDOM: ",loss_base_rhc)
 
+    model_train_time = timer()
     clf_nn.train()
     if args.algorithm in ["crownibp","fgsm","pgd","noise"]:
         # initialize the model objective wrappers and make BoundedModule
@@ -140,7 +144,8 @@ def main(args):
         # train models
         epochs,loss_tr,loss_val = train_draft(model_wrap, dataloader_train, dataloader_val, args=args)
         # epochs,loss_tr,loss_val = train_robust(model_wrap, dataloader_train, dataloader_val, method="natural", args=args)
-
+    model_train_time = timer() - model_train_time
+    print(f"Training Time of {args.algorithm}: ",model_train_time)
     # ================== Evaluate the models ========================== #
     clf_nn.eval()
     with torch.no_grad():
@@ -346,5 +351,12 @@ if __name__ == "__main__":
         args.algorithm = "pgd"
 
     args.img_path = img_path
+
+
+    args.log_path = os.path.join("logs",f"attack_{args.attack}",f"results_{args.algorithm}",args.dataset)
+    os.makedirs(args.log_path,exist_ok=True)
+    log_file = open(os.path.join(args.log_path,"seed_"+str(args.seed)+".log"),"w",buffering=1)
+    sys.stdout = log_file
+    sys.stderr = log_file
 
     main(args)

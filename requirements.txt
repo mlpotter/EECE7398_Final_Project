@@ -7,6 +7,7 @@ survival_evaluation==0.1.0
 cvxpy==1.4.1
 jax==0.4.19
 jax-verify==1.0
+pandas==2.2.2
 seaborn==0.13.0
 scipy==1.11.3
 openpyxl==3.1.2

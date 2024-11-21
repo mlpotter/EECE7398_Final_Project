@@ -107,7 +107,7 @@ def load_dataframe(ds_name="ova",drop_first=False,normalize=True,test_size=0.2):
     print(f"The train dataset shape {data_train.shape}")
     print(f"The val dataset shape {data_val.shape}")
     print(f"The test dataset shape {data_test.shape}")
-    print("Min Time {:.4f} - Max Time {:.4f}".format(data_test.time.min().item(),data_test.time.max().item()))
+    print("Min Time {:.4f} - Max Time {:.4f}".format(data_test.time.min(),data_test.time.max()))
 
     return data_train,data_val,data_test
 if __name__ == "__main__":
